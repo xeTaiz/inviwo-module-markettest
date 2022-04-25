@@ -1,0 +1,25 @@
+name: Build Module
+
+on:
+  push:
+
+jobs:
+  create-modules-dir:
+    run: mkdir ${{ github.workspace}}/ext_modules
+
+  checkout-module:
+    uses: actions/checkout@v2
+    with:
+      path: '${{github.workspace}}/ext_modules/module'
+      submodules: recursive
+
+  build-inviwo:
+    uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@latest
+    with:
+      ext_modules_path: ${{ github.workspace }}/ext_modules
+
+  print-stuff:
+    run: |
+      ls -l build/bin
+      ls -l build/lib
+      ls -l build/modules
