@@ -7,4 +7,66 @@ jobs:
   build-inviwo-with-module:
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
     with:
-      ext_modules_repo: xeTaiz/inviwo-module-markettest
+      ext_modules_repo: ${{ github.repository }}
+
+  release-module:
+    needs: build-inviwo-with-module
+    strategy:
+      matrix:
+        module: [markettest]
+        os: [windows-latest, macos-latest, ubuntu-20.04]
+        include:
+          - os: 'windows-latest'
+            installer: 'inviwo-installer-win'
+            artifact: 'build/inviwo-v*.exe'
+            builddir: 'build-dir-win'
+            bartifact: 'build/'
+            zipfiles: /build/bin/Release/inviwo-module-${{ matrix.module }}.dll build/modules/${{ matrix.module }}/
+          - os: 'macos-latest'
+            installer: 'inviwo-installer-macos'
+            artifact: 'build/Inviwo-v*.dmg'
+            builddir: 'build-dir-macos'
+            bartifact: 'build/'
+            zipfiles: build/lib/libinviwo-module-${{ matrix.module }}.so build/modules/${{ matrix.module }}/
+          - os: 'ubuntu-20.04'
+            installer: 'inviwo-installer-ubuntu'
+            artifact: 'build/inviwo-v*.zip'
+            builddir: 'build-dir-ubuntu'
+            bartifact: 'build/'
+            zipfiles: build/lib/libinviwo-module-${{ matrix.module }}.so build/modules/${{ matrix.module }}/
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Download Build dir artifact
+      uses: dawidd6/action-download-artifact@v3
+      with:
+        name: ${{ matrix.builddir }}
+
+    - name: Zip Module Data
+      uses: papeloto/action-zip@v1
+      with:
+        files: ${{ matrix.zipfiles }}
+        dest: ${{ matrix.module }}.zip
+
+    - name: Release Module Artifact
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+          tag_name: release/${{ github.sha }}-${{ runner.os }}
+          release_name: Release ${{ github.sha }}-${{ runner.os }}
+          body: |
+            Automatic Release to Inviwo Marketplace.
+          draft: false
+          prerelease: false
+
+    - name: Upload Release Assets
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: ./${{ matrix.module }}.zip
+        asset_name: ${{ matrix.module }}.zip
+        asset_content_type: application/zip
