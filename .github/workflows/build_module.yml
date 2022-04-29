@@ -36,7 +36,7 @@ jobs:
             zipfiles: build/lib/libinviwo-module-${{ matrix.module }}.so build/modules/${{ matrix.module }}/
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Download Build dir artifact
+    - name: Download Build dir artifact
       uses: dawidd6/action-download-artifact@v3
       with:
         name: ${{ matrix.builddir }}
