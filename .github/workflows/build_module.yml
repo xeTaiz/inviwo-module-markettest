@@ -5,21 +5,6 @@ on:
 
 jobs:
   build-inviwo-with-module:
-    using: 'composite'
-    runs-on: 'windows-latest' 
-    steps:
-    - name: create-modules-dir
-      run: mkdir ${{ github.workspace}}/ext_modules
-    - name: checkout-module
-      uses: actions/checkout@v2
-      with:
-        path: '${{github.workspace}}/ext_modules/module'
-        submodules: recursive
-    - uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
-      with:
-        ext_modules_path: ${{ github.workspace }}/ext_modules
-    - name: print-stuff
-      run: |
-        ls -l build/bin
-        ls -l build/lib
-        ls -l build/modules
+    uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
+    with:
+      ext_modules_repo: xeTaiz/inviwo-module-markettest
