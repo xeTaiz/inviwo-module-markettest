@@ -1,10 +1,11 @@
 name: Build Module
 
-on:
-  push:
-
+### EDIT THIS ###
 env:
   MODULE_NAME: markettest
+#################
+on:
+  push:
 
 jobs:
   build-inviwo-with-module:
