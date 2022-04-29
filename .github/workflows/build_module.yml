@@ -12,8 +12,6 @@ jobs:
     with:
       ext_modules_repo: ${{ github.repository }}
     
-
-
   release-module:
     needs: build-inviwo-with-module
     strategy:
