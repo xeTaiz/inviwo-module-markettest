@@ -14,15 +14,9 @@ jobs:
       with:
         path: '${{github.workspace}}/ext_modules/module'
         submodules: recursive
-
-  build-inviwo:
-    uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
-    with:
-      ext_modules_path: ${{ github.workspace }}/ext_modules
-
-  logging:
-    runs-on: 'windows-latest'
-    steps:
+    - uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
+      with:
+        ext_modules_path: ${{ github.workspace }}/ext_modules
     - name: print-stuff
       run: |
         ls -l build/bin
