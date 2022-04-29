@@ -3,6 +3,10 @@ name: Build Module
 on:
   push:
 
+
+env:
+  MODULE_NAME: markettest
+
 jobs:
   build-inviwo-with-module:
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
@@ -13,27 +17,20 @@ jobs:
     needs: build-inviwo-with-module
     strategy:
       matrix:
-        module: [markettest]
         os: [windows-latest, macos-latest, ubuntu-20.04]
         include:
           - os: 'windows-latest'
             installer: 'inviwo-installer-win'
-            artifact: 'build/inviwo-v*.exe'
             builddir: 'build-dir-win'
-            bartifact: 'build/'
-            zipfiles: /build/bin/Release/inviwo-module-${{ matrix.module }}.dll build/modules/${{ matrix.module }}/
+            zipfiles: /build/bin/Release/inviwo-module-${{ env.MODULE_NAME }}.dll build/modules/${{ env.MODULE_NAME }}/
           - os: 'macos-latest'
             installer: 'inviwo-installer-macos'
-            artifact: 'build/Inviwo-v*.dmg'
             builddir: 'build-dir-macos'
-            bartifact: 'build/'
-            zipfiles: build/lib/libinviwo-module-${{ matrix.module }}.so build/modules/${{ matrix.module }}/
+            zipfiles: build/lib/libinviwo-module-${{ env.MODULE_NAME }}.so build/modules/${{ env.MODULE_NAME }}/
           - os: 'ubuntu-20.04'
             installer: 'inviwo-installer-ubuntu'
-            artifact: 'build/inviwo-v*.zip'
             builddir: 'build-dir-ubuntu'
-            bartifact: 'build/'
-            zipfiles: build/lib/libinviwo-module-${{ matrix.module }}.so build/modules/${{ matrix.module }}/
+            zipfiles: build/lib/libinviwo-module-${{ env.MODULE_NAME }}.so build/modules/${{ env.MODULE_NAME }}/
     runs-on: ${{ matrix.os }}
     steps:
     - name: Download Build dir artifact
@@ -45,7 +42,7 @@ jobs:
       uses: papeloto/action-zip@v1
       with:
         files: ${{ matrix.zipfiles }}
-        dest: ${{ matrix.module }}.zip
+        dest: ${{ env.MODULE_NAME }}.zip
 
     - name: Release Module Artifact
       id: create_release
@@ -67,6 +64,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./${{ matrix.module }}.zip
-        asset_name: ${{ matrix.module }}.zip
+        asset_path: ./${{ env.MODULE_NAME }}.zip
+        asset_name: ${{ env.MODULE_NAME }}.zip
         asset_content_type: application/zip
