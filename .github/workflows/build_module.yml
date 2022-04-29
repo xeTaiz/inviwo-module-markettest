@@ -5,6 +5,7 @@ on:
 
 jobs:
   build-inviwo-with-module:
+    using: 'composite'
     runs-on: 'windows-latest' 
     steps:
     - name: create-modules-dir
