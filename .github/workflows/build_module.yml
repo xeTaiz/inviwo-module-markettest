@@ -18,7 +18,7 @@ jobs:
         submodules: recursive
 
   build-inviwo:
-    uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@master
+    uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
     with:
       ext_modules_path: ${{ github.workspace }}/ext_modules
 
