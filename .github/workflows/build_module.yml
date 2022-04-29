@@ -4,21 +4,21 @@ on:
   push:
 
 jobs:
-  create-modules-dir:
+  - name: create-modules-dir
     run: mkdir ${{ github.workspace}}/ext_modules
 
-  checkout-module:
+  - name: checkout-module
     uses: actions/checkout@v2
     with:
       path: '${{github.workspace}}/ext_modules/module'
       submodules: recursive
 
-  build-inviwo:
+  - name: build-inviwo
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@latest
     with:
       ext_modules_path: ${{ github.workspace }}/ext_modules
 
-  print-stuff:
+  - name: print-stuff
     run: |
       ls -l build/bin
       ls -l build/lib
