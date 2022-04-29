@@ -3,10 +3,6 @@ name: Build Module
 on:
   push:
 
-
-env:
-  MODULE_NAME: markettest
-
 jobs:
   build-inviwo-with-module:
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
@@ -14,6 +10,10 @@ jobs:
       ext_modules_repo: ${{ github.repository }}
 
   release-module:
+    ##### EDIT THIS ####
+    env:
+      MODULE_NAME: markettest
+    ####################
     needs: build-inviwo-with-module
     strategy:
       matrix:
