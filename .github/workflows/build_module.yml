@@ -23,6 +23,7 @@ jobs:
       ext_modules_path: ${{ github.workspace }}/ext_modules
 
   logging:
+    runs-on: 'windows-latest'
     steps:
     - name: print-stuff
       run: |
