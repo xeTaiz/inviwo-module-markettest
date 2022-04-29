@@ -12,21 +12,10 @@ jobs:
     with:
       ext_modules_repo: ${{ github.repository }}
     
-  fetch-modules:
-    outputs:
-      module: ${{ steps.set-modules.outputs.modules }}
-    steps:
-      - id: set-modules
-        run: echo "::set-output name=module::{'module': ${{ env.MODULE_NAME }}}"
+
 
   release-module:
-    ##### EDIT THIS ####
-    env:
-      MODULE_NAME: markettest
-    ####################
-    needs: 
-      - build-inviwo-with-module
-      - fetch-modules
+    needs: build-inviwo-with-module
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-20.04]
@@ -34,15 +23,18 @@ jobs:
           - os: 'windows-latest'
             installer: 'inviwo-installer-win'
             builddir: 'build-dir-win'
-            zipfiles: /build/bin/Release/inviwo-module-${{ needs.fetch-modules.outputs.module }}.dll build/modules/${{ needs.fetch-modules.outputs.module }}/
+            libprefix: '/build/bin/Release/inviwo-module-'
+            libext: '.dll'
           - os: 'macos-latest'
             installer: 'inviwo-installer-macos'
             builddir: 'build-dir-macos'
-            zipfiles: build/lib/libinviwo-module-${{ needs.fetch-modules.outputs.module }}.so build/modules/${{ needs.fetch-modules.outputs.module }}/
+            libprefix: 'build/lib/libinviwo-module-'
+            libext: '.so'
           - os: 'ubuntu-20.04'
             installer: 'inviwo-installer-ubuntu'
             builddir: 'build-dir-ubuntu'
-            zipfiles: build/lib/libinviwo-module-${{ needs.fetch-modules.outputs.module }}.so build/modules/${{ needs.fetch-modules.outputs.module }}/
+            libprefix: 'build/lib/libinviwo-module-'
+            libext: '.so'
     runs-on: ${{ matrix.os }}
     steps:
     - name: Download Build dir artifact
@@ -53,8 +45,8 @@ jobs:
     - name: Zip Module Data
       uses: papeloto/action-zip@v1
       with:
-        files: ${{ matrix.zipfiles }}
-        dest: ${{ needs.fetch-modules.outputs.module }}.zip
+        files: ${{ matrix.libprefix }}${{ env.MODULE_NAME }}${{ matrix.libext }} build/modules/${{ env.MODULE_NAME }}
+        dest: ${{ env.MODULE_NAME }}.zip
 
     - name: Release Module Artifact
       id: create_release
@@ -76,6 +68,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./${{ needs.fetch-modules.outputs.module }}.zip
-        asset_name: ${{ needs.fetch-modules.outputs.module }}.zip
+        asset_path: ./${{ env.MODULE_NAME }}.zip
+        asset_name: ${{ env.MODULE_NAME }}.zip
         asset_content_type: application/zip
