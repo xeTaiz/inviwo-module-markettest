@@ -5,12 +5,10 @@ on:
 
 jobs:
   build-inviwo-with-module:
-    runs-on: 
-      os: 'windows-latest' 
+    runs-on: 'windows-latest' 
     steps:
     - name: create-modules-dir
       run: mkdir ${{ github.workspace}}/ext_modules
-
     - name: checkout-module
       uses: actions/checkout@v2
       with:
