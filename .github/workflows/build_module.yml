@@ -17,18 +17,18 @@ jobs:
     needs: build-inviwo-with-module
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-20.04]
+        os: [windows-latest, ubuntu-20.04] # macos-latest
         include:
           - os: 'windows-latest'
             installer: 'inviwo-installer-win'
             builddir: 'build-dir-win'
             libprefix: '/build/bin/Release/inviwo-module-'
             libext: '.dll'
-          - os: 'macos-latest'
-            installer: 'inviwo-installer-macos'
-            builddir: 'build-dir-macos'
-            libprefix: 'build/lib/libinviwo-module-'
-            libext: '.so'
+          # - os: 'macos-latest'
+          #   installer: 'inviwo-installer-macos'
+          #   builddir: 'build-dir-macos'
+          #   libprefix: 'build/lib/libinviwo-module-'
+          #   libext: '.so'
           - os: 'ubuntu-20.04'
             installer: 'inviwo-installer-ubuntu'
             builddir: 'build-dir-ubuntu'
