@@ -1,7 +1,6 @@
 name: Build Module
 
 env:
-  NODE_OPTIONS: '--max_old_space_size=4096'
 ### EDIT THIS ###
   MODULE_NAME: markettest
 #################
@@ -13,7 +12,7 @@ jobs:
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
     with:
       ext_modules_repo: ${{ github.repository }}
-    
+
   release-module:
     needs: build-inviwo-with-module
     strategy:
