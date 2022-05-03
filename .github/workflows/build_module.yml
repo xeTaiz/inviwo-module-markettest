@@ -10,6 +10,7 @@ on:
 jobs:
   build-inviwo-with-module:
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
+    continue-on-error: true
     with:
       ext_modules_repo: ${{ github.repository }}
 
@@ -37,6 +38,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Download Build dir artifact
+      needs
       uses: dawidd6/action-download-artifact@v3
       with:
         name: ${{ matrix.builddir }}
