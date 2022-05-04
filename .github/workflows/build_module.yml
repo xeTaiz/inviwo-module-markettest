@@ -12,6 +12,7 @@ jobs:
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
     with:
       ext_modules_repo: ${{ github.repository }}
+      ext_module_name: ${{ env.MODULE_NAME }}
 
   release-module:
     needs: build-inviwo-with-module
@@ -22,17 +23,17 @@ jobs:
         include:
           - os: 'windows-latest'
             installer: 'inviwo-installer-win'
-            builddir: 'build-dir-win'
+            baname: 'build-dir-win'
             libprefix: '/build/bin/Release/inviwo-module-'
             libext: '.dll'
           # - os: 'macos-latest'
           #   installer: 'inviwo-installer-macos'
-          #   builddir: 'build-dir-macos'
+          #   baname: 'build-dir-macos'
           #   libprefix: 'build/lib/libinviwo-module-'
           #   libext: '.so'
           - os: 'ubuntu-20.04'
             installer: 'inviwo-installer-ubuntu'
-            builddir: 'build-dir-ubuntu'
+            baname: 'build-dir-ubuntu'
             libprefix: 'build/lib/libinviwo-module-'
             libext: '.so'
     runs-on: ${{ matrix.os }}
@@ -40,7 +41,7 @@ jobs:
     - name: Download Build dir artifacts
       uses: dawidd6/action-download-artifact@v2
       with:
-        name: ${{ matrix.builddir }}
+        name: ${{ matrix.baname }}
 
     - name: Zip Module Data
       uses: papeloto/action-zip@v1
