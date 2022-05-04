@@ -9,6 +9,7 @@ on:
 
 jobs:
   modulename-saver:
+    runs-on: ubuntu-20.02
     steps:
       - name: Save MODULE_NAME envvar to outputs
         run: echo "::set-output name=module_name::${{ env.MODULE_NAME }}"
