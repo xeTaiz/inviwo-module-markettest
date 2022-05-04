@@ -18,7 +18,7 @@ jobs:
     needs: modulename-saver
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
     with:
-      ext_modules_repo: ${{ github.repository }}
+      ext_modules_repo: ${{ github.repository }} 
       ext_module_name: ${{ needs.modulename-saver.outputs.module_name }}
 
   release-module:
