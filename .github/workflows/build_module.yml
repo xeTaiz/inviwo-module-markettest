@@ -8,11 +8,17 @@ on:
   push:
 
 jobs:
+  modulename-saver:
+    steps:
+      - name: Save MODULE_NAME envvar to outputs
+        run: echo "::set-output name=module_name::${{ env.MODULE_NAME }}"
+
   build-inviwo-with-module:
+    needs: modulename-saver
     uses: xeTaiz/inviwo-marketplace/.github/workflows/inviwo.yml@updated
     with:
       ext_modules_repo: ${{ github.repository }}
-      ext_module_name: ${{ env.MODULE_NAME }}
+      ext_module_name: ${{ needs.modulename-saver.outputs.module_name }}
 
   release-module:
     needs: build-inviwo-with-module
