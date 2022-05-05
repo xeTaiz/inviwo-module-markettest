@@ -16,7 +16,7 @@ jobs:
         run: echo "::set-output name=module_name::${{ env.MODULE_NAME }}"
       - name: Save caps MODULE_NAME to outputs
         id: save-caps
-        uses: ASzc/change-string-case@v2
+        uses: ASzc/change-string-case-action@v2
         with:
           string: ${{ env.MODULE_NAME }}
     outputs:
