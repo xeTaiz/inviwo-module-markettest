@@ -17,8 +17,8 @@ jobs:
       - name: Save caps MODULE_NAME to outputs
         id: save-caps
         uses: ASzc/change-string-case@v2
-          with:
-            string: ${{ env.MODULE_NAME }}
+        with:
+          string: ${{ env.MODULE_NAME }}
     outputs:
       module_name: ${{ steps.save-name.outputs.module_name }}
       module_name_caps: ${{ steps.save-caps.outputs.uppercase }}
