@@ -41,7 +41,7 @@ jobs:
           - os: 'windows-latest'
             installer: 'inviwo-installer-win'
             baname: 'ext-module-win'
-            libprefix: '/build/bin/Release/inviwo-module-'
+            libprefix: 'build/bin/Release/inviwo-module-'
             libext: '.dll'
           # - os: 'macos-latest'
           #   installer: 'inviwo-installer-macos'
@@ -59,6 +59,15 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: ${{ matrix.baname }}
+
+    - name: Log Stuff
+      run: |
+        pwd
+        ls -l .
+        ls -l build
+        ls -l build/bin
+        ls -l build/lib
+        ls -l build/modules
 
     - name: Zip Module Data
       uses: papeloto/action-zip@v1
