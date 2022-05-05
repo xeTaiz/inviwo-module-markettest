@@ -14,8 +14,14 @@ jobs:
       - name: Save MODULE_NAME envvar to outputs
         id: save-name
         run: echo "::set-output name=module_name::${{ env.MODULE_NAME }}"
+      - name: Save caps MODULE_NAME to outputs
+        id: save-caps
+        uses: ASzc/change-string-case@v2
+          with:
+            string: ${{ env.MODULE_NAME }}
     outputs:
       module_name: ${{ steps.save-name.outputs.module_name }}
+      module_name_caps: ${{ steps.save-caps.outputs.uppercase }}
 
   build-inviwo-with-module:
     needs: save-module-name
@@ -23,6 +29,7 @@ jobs:
     with:
       ext_modules_repo: ${{ github.repository }} 
       ext_module_name: ${{ needs.save-module-name.outputs.module_name }}
+      ext_module_cmake: "-DIVW_MODULE_${{ needs.save-module-name.outputs.module_name_caps }}=ON"
 
   release-module:
     needs: build-inviwo-with-module
