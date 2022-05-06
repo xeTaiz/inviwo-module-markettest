@@ -60,15 +60,6 @@ jobs:
       with:
         name: ${{ matrix.baname }}
 
-    - name: Log Stuff
-      run: |
-        pwd
-        ls -l .
-        ls -l build
-        ls -l build/bin
-        ls -l build/lib
-        ls -l build/modules
-
     - name: Zip Module Data
       uses: papeloto/action-zip@v1
       with:
