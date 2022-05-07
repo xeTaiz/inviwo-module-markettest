@@ -36,18 +36,18 @@ jobs:
     if: always()
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-20.04] # macos-latest
+        os: [windows-latest, ubuntu-20.04, macos-latest]
         include:
           - os: 'windows-latest'
             installer: 'inviwo-installer-win'
             baname: 'ext-module-win'
             libprefix: 'bin/Release/inviwo-module-'
             libext: '.dll'
-          # - os: 'macos-latest'
-          #   installer: 'inviwo-installer-macos'
-          #   baname: 'ext-module-macos'
-          #   libprefix: 'build/lib/libinviwo-module-'
-          #   libext: '.so'
+          - os: 'macos-latest'
+            installer: 'inviwo-installer-macos'
+            baname: 'ext-module-macos'
+            libprefix: 'lib/libinviwo-module-'
+            libext: '.dylib'
           - os: 'ubuntu-20.04'
             installer: 'inviwo-installer-ubuntu'
             baname: 'ext-module-ubuntu'
@@ -60,10 +60,15 @@ jobs:
       with:
         name: ${{ matrix.baname }}
 
-    - name: Log directory
+    - name: Log directory (Linux)
+      if: ${{ runner.os == 'Linux' }}
       run: |
-        ls -l .
-        for dir in ./*/; do ls -l $dir; done
+        ls -l bin
+        ls -l modules
+
+    - name: Log Directory (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      run: Dir -Recurse . | Select Fullname
 
     - name: Zip Module Data
       uses: papeloto/action-zip@v1
