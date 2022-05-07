@@ -61,7 +61,7 @@ jobs:
         name: ${{ matrix.baname }}
 
     - name: Log directory
-      runs: |
+      run: |
         ls -l .
         for dir in ./*/; do ls -l $dir; done
 
