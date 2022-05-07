@@ -63,7 +63,7 @@ jobs:
     - name: Log directory (Linux)
       if: ${{ runner.os == 'Linux' }}
       run: |
-        ls -l bin
+        ls -l lib
         ls -l modules
 
     - name: Log Directory (Windows)
