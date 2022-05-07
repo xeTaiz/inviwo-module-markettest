@@ -60,6 +60,11 @@ jobs:
       with:
         name: ${{ matrix.baname }}
 
+    - name: Log directory
+      runs: |
+        ls -l .
+        for dir in ./*/; do ls -l $dir; done
+
     - name: Zip Module Data
       uses: papeloto/action-zip@v1
       with:
